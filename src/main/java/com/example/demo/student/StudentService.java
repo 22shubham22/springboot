@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
@@ -32,4 +34,24 @@ public class StudentService {
             return new ResponseEntity("Failed",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity updateStudent(String name,Student student) {
+        Student studentFromDb = this.studentRepository.findStudentByName(name);
+
+        if (studentFromDb != null && Objects.equals(studentFromDb.getName(), student.getName())){
+            studentFromDb.setName(student.getName());
+            studentFromDb.setAge((student.getAge()));
+
+            this.studentRepository.save(studentFromDb);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity deleteStudent(String name) {
+        this.studentRepository.deleteStudentByName(name);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }

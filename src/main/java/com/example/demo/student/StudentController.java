@@ -25,4 +25,13 @@ public class StudentController {
         return this.studentService.saveStudent(student);
 
     }
+    @PutMapping("{name}")
+    public ResponseEntity updateStudent(@PathVariable String name, @RequestBody Student student) {
+        return this.studentService.updateStudent(name, student);
+    }
+
+    @DeleteMapping("{name}")
+    public ResponseEntity updateStudent(@PathVariable String name) {
+        return this.studentService.deleteStudent(name);
+    }
 }
